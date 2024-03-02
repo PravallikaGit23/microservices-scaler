@@ -27,4 +27,10 @@ public class ProductController {
                                     product.getCategory());
 
     }
+
+    @DeleteMapping("/products/{id}")
+    public void deleteProduct(@PathVariable("id") int id){
+
+       productService.deleteById(id);
+    }
 }

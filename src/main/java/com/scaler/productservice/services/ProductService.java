@@ -8,4 +8,7 @@ public interface ProductService {
     public Product getProduct(int id);
 
     Product createProduct(String title, String desc, double price, String imageurl, String category);
+
+    void deleteById(int id);
 }
+

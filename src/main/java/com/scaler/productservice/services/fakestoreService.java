@@ -33,4 +33,9 @@ public class fakestoreService implements ProductService{
       FakeStoreProductDto fakeStoreProductDto1 = restTemplate.postForObject("https://fakestoreapi.com/products",fakeStoreProductDto, FakeStoreProductDto.class);
       return fakeStoreProductDto1.toProduct();
     }
+
+    @Override
+    public void deleteById(int id) {
+     restTemplate.delete("https://fakestoreapi.com/products/"+id);
+    }
 }

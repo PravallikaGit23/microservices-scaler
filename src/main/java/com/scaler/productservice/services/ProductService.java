@@ -18,5 +18,7 @@ public interface ProductService {
    Product updateProduct(Long productId , String title, String desc, Double price, String imageurl, String category);
 
     List<String> getAllCategories();
+
+    List<Product> getListOfProductsByCategory(String category);
 }
 

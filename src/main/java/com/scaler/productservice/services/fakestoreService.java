@@ -114,5 +114,31 @@ public class fakestoreService implements ProductService{
             // You can throw an exception, log an error, or return an empty list
             return Collections.emptyList();
         }
+
+
+    }
+
+    @Override
+    public List<Product> getListOfProductsByCategory(String category) {
+
+        ResponseEntity<FakeStoreProductDto[]> responseEntity = restTemplate.getForEntity(
+                "https://fakestoreapi.com/products/category/"+category,
+                FakeStoreProductDto[].class
+        );
+
+        if (responseEntity.getStatusCode().is2xxSuccessful()) {
+            FakeStoreProductDto[] fakeStoreProductDtos = responseEntity.getBody();
+
+            // Convert FakeStoreProductDtos to Products
+            List<Product> productList = Arrays.stream(fakeStoreProductDtos)
+                    .map(FakeStoreProductDto::toProduct)
+                    .collect(Collectors.toList());
+
+            return productList;
+        } else {
+            // Handle the case where the request was not successful
+            // You can throw an exception, log an error, or return an empty list
+            return Collections.emptyList();
+        }
     }
 }

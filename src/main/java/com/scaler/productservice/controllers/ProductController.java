@@ -5,6 +5,9 @@ import com.scaler.productservice.models.Category;
 import com.scaler.productservice.models.Product;
 import com.scaler.productservice.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,10 +16,12 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
+    @Qualifier("selfProductService")
     ProductService productService;
     @GetMapping("/products")
     public List<Product> getAllProducts(){
-     return   productService.getAllProducts();
+
+        return   productService.getAllProducts();
     }
 
     @GetMapping("/products/{id}")
@@ -26,12 +31,14 @@ public class ProductController {
     }
 
     @PostMapping("/products")
-    public Product createProduct(@RequestBody CreateProductRequestDto product){
-       return productService.createProduct(product.getTitle(),
+    public ResponseEntity<Product> createProduct(@RequestBody CreateProductRequestDto product){
+       Product product1 = productService.createProduct(product.getTitle(),
                                     product.getDescription(),
                                     product.getPrice(),
                                     product.getImage(),
                                     product.getCategory());
+
+        return new ResponseEntity<>(product1, HttpStatus.CREATED);
 
     }
     @PutMapping("/products/{id}")

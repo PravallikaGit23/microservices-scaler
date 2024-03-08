@@ -1,9 +1,9 @@
 package com.scaler.productservice.services;
 
-import com.scaler.productservice.models.Category;
 import com.scaler.productservice.models.Product;
 
 import java.util.List;
+
 
 public interface ProductService {
 
@@ -15,7 +15,7 @@ public interface ProductService {
 
     List<Product> getAllProducts();
 
-   Product updateProduct(Long productId , String title, String desc, Double price, String imageurl, String category);
+    Product updateProduct(Long productId , String title, String desc, Double price, String imageurl, String category);
 
     List<String> getAllCategories();
 

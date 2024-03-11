@@ -1,6 +1,7 @@
 package com.scaler.productservice.controllers;
 
 import com.scaler.productservice.dtos.CreateProductRequestDto;
+import com.scaler.productservice.dtos.ProductUpdateDto;
 import com.scaler.productservice.models.Category;
 import com.scaler.productservice.models.Product;
 import com.scaler.productservice.services.ProductService;
@@ -43,7 +44,7 @@ public class ProductController {
     }
     @PutMapping("/products/{id}")
     public Product updateProduct(@PathVariable("id") Long productId ,
-                                 @RequestBody CreateProductRequestDto productRequestDto){
+                                 @RequestBody ProductUpdateDto productRequestDto){
        return productService.updateProduct(productId,productRequestDto.getTitle(),
                 productRequestDto.getDescription(),
                 productRequestDto.getPrice(),
@@ -51,15 +52,29 @@ public class ProductController {
                 productRequestDto.getCategory());
 
     }
+    @PatchMapping("/products/{id}")
+    public Product updateProductWithExisistingDetails(@PathVariable("id") Long productId ,
+                                 @RequestBody ProductUpdateDto productRequestDto){
+        return productService.updateProductWithExisistingDetails(productId,
+                productRequestDto.getTitle(),
+                productRequestDto.getDescription(),
+                productRequestDto.getPrice(),
+                productRequestDto.getImage(),
+                productRequestDto.getCategory());
+
+    }
+
+
     @DeleteMapping("/products/{id}")
-    public void deleteProduct(@PathVariable("id") int id){
+    public void deleteProduct(@PathVariable("id") Long id){
 
        productService.deleteById(id);
     }
 
     @GetMapping("/products/categories")
-    public List<String> getAllCategories(){
-      return  productService.getAllCategories();
+    public List<Category> getAllCategories(){
+
+        return  productService.getAllCategories();
     }
 
     @GetMapping("/products/category/{categories}")

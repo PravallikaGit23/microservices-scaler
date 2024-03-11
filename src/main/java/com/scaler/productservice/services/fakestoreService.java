@@ -8,6 +8,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -42,7 +43,7 @@ public class fakestoreService implements ProductService{
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(Long id) {
      restTemplate.delete("https://fakestoreapi.com/products/"+id);
     }
 
@@ -98,25 +99,27 @@ public class fakestoreService implements ProductService{
     }
 
     @Override
-    public List<String> getAllCategories() {
-
+    public List<Category> getAllCategories() {
         ResponseEntity<String[]> responseEntity = restTemplate.getForEntity(
                 "https://fakestoreapi.com/products/categories",
                 String[].class
         );
 
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
-            List<String> categoryList = Arrays.stream(responseEntity.getBody()).toList();
-
-            return categoryList;
+            return Arrays.stream(responseEntity.getBody())
+                    .map(categoryName -> {
+                        Category category = new Category();
+                        category.setTitle(categoryName);
+                        return category;
+                    })
+                    .collect(Collectors.toList());
         } else {
             // Handle the case where the request was not successful
             // You can throw an exception, log an error, or return an empty list
             return Collections.emptyList();
         }
-
-
     }
+
 
     @Override
     public List<Product> getListOfProductsByCategory(String category) {
@@ -140,5 +143,10 @@ public class fakestoreService implements ProductService{
             // You can throw an exception, log an error, or return an empty list
             return Collections.emptyList();
         }
+    }
+
+    @Override
+    public Product updateProductWithExisistingDetails(Long productId, String title, String description, double price, String image, String category) {
+        return null;
     }
 }
